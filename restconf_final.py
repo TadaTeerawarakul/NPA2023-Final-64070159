@@ -3,7 +3,7 @@ import requests
 requests.packages.urllib3.disable_warnings()
 
 # Router IP Address is 10.0.15.189
-api_url = "https://10.0.15.189/restconf/data/ietf-interfaces:interfaces/interface=Loopback64070184"
+api_url = "https://10.0.15.189/restconf/data/ietf-interfaces:interfaces/interface=Loopback64070159"
 
 # the RESTCONF HTTP headers, including the Accept and Content-Type
 # Two YANG data formats (JSON and XML) work with RESTCONF 
@@ -16,16 +16,22 @@ basicauth = ("admin", "cisco")
 
 def create():
     yangConfig = {
-        "ietf-interfaces:interface": {
-            "name": "Loopback64070159",
-            "description": "Added by RESTCONF",
-            "type": "iana-if-type:softwareLoopback",
-            "enabled": True,
-            "ietf-ip:ipv4": {},
-            "ietf-ip:ipv6": {}
-        }
+    "ietf-interfaces:interface": {
+        "name": "Loopback64070159",
+        "description": "My second RESTCONF loopback",
+        "type": "iana-if-type:softwareLoopback",
+        "enabled": True,
+        "ietf-ip:ipv4": {
+            "address": [
+                {
+                    "ip": "172.16.1.159",
+                    "netmask": "255.255.255.0"
+                }
+            ]
+        },
+        "ietf-ip:ipv6": {}
+    }
 }
-
     resp = requests.put(
         api_url, 
         data=json.dumps(yangConfig), 
@@ -36,7 +42,7 @@ def create():
 
     if(resp.status_code >= 200 and resp.status_code <= 299):
         print("STATUS OK: {}".format(resp.status_code))
-        return "Interface loopback 64070184 is created successfully"
+        return "Interface loopback 64070159 is created successfully"
     else:
         print('Error. Status Code: {}'.format(resp.status_code))
         return "Cannot create: Interface loopback 64070159"
@@ -103,7 +109,7 @@ def disable():
         return "Interface loopback 64070159 is shutdowned successfully"
     else:
         print('Error. Status Code: {}'.format(resp.status_code))
-
+        return "Cannot disable: Interface loopback 64070159"
 
 def status():
     api_url_status = "https://10.0.15.189/restconf/data/ietf-interfaces:interfaces/interface=Loopback64070159"

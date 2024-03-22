@@ -1,6 +1,6 @@
 #######################################################################################
-# Yourname: Tada Teerawarakul
-# Your student ID: 64070159
+# Yourname:
+# Your student ID:
 # Your GitHub Repo: 
 
 #######################################################################################
@@ -9,6 +9,7 @@ from restconf_final import create, delete, enable, disable, status
 import requests
 import json
 import time
+
 #######################################################################################
 # 2. Assign the Webex hard-coded access token to the variable accessToken.
 
@@ -63,17 +64,13 @@ while True:
     # store the text of the first message in the array
     message = messages[0]["text"]
     print("Received message: " + message)
-    
+
     # check if the text of the message starts with the magic character "/" followed by your studentID and a space and followed by a command name
     #  e.g.  "/66070123 create"
     space = message.find(" ")
-
     if message.find("/") == 0:
-
         # extract the command
-        name = message[1:space]
-        command = message[space+1:]
-        print(command)
+        command = message[space + 1 :]
 
 # 5. Complete the logic for each command
 
@@ -103,7 +100,7 @@ while True:
         # Post the call to the Webex Teams message API.
         r = requests.post(
             "https://webexapis.com/v1/messages",
-            data=json.dumps({"roomId": roomIdToGetMessages, "text": responseMessage}),
+            data=json.dumps(postData),
             headers=postHTTPHeaders,
         )
         if not r.status_code == 200:
