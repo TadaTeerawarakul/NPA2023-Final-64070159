@@ -124,10 +124,8 @@ def status():
     if(resp.status_code >= 200 and resp.status_code <= 299):
         print("STATUS OK: {}".format(resp.status_code))
         response_json = resp.json()
-        admin_status = 'up' if response_json['ietf-interfaces:interface']['enabled'] == True else 'down'
-        oper_status = 'up' if response_json['ietf-interfaces:interface']['ietf-ip:ipv4']['address'][0]['ip'] != '' else 'down'
-        print(admin_status)
-        print(oper_status)
+        admin_status = response_json['ietf-interfaces:interface']['admin-status']
+        oper_status = response_json['ietf-interfaces:interface']['oper-status']
         if admin_status == 'up' and oper_status == 'up':
             return "Interface loopback 64070159 is enabled"
         elif admin_status == 'down' and oper_status == 'down':
